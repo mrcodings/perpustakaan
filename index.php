@@ -11,6 +11,7 @@ if(isset($_POST['username'])){
         $message = "Username atau password salah.";
     }else{
         $_SESSION['username'] = $row['username'];
+        $_SESSION['id'] = $row['id'];
     }
 }
 
@@ -25,8 +26,15 @@ if(isset($_POST['username'])){
     <body>
         <div class="container" style="margin-top: 50px;">
             <?php if(isset($_SESSION['username'])) : ?>
-            <h3>Selamat datang <?= $_SESSION['username'] ?></h3>
-            (<a href="logout.php">Logout</a>)
+                <?php include("template/header.php"); ?>
+                <?php
+                    $page = isset($_GET['page']) ? explode("?", $_GET['page']) : null;
+                    if(!empty($page) && is_file("page/" . $page[0])){
+                        include("page/" . $page[0]);
+                    }else{
+                        include("home.php");
+                    }
+                ?>
             <?php else: ?>
             <div class="row">
                 <div class="col-md-4 offset-md-4">
